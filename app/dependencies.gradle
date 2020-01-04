@@ -1,0 +1,44 @@
+final dependenciesVersions = [
+        androidx_version             : '1.0.0',
+        corektx_version              : '1.1.0',
+        constraintlayout_version     : '1.1.3',
+        androidxjunit_version        : '1.1.1',
+        junit_version                : '4.12',
+        kotlinxCoroutinesCore_version: '1.3.2',
+        kotlin_version               : '1.3.50',
+        retrofit_version             : '2.6.1',
+        picasso_version              : '2.71828'
+]
+
+final testDependencies = [
+        junit: "junit:junit:${dependenciesVersions.junit_version}"
+]
+
+final androidxDependencies = [
+        appcompat       : "androidx.appcompat:appcompat:${dependenciesVersions.androidx_version}",
+        coreKtx         : "androidx.core:core-ktx:${dependenciesVersions.corektx_version}",
+        constraintlayout: "androidx.constraintlayout:constraintlayout:${dependenciesVersions.constraintlayout_version}",
+        recyclerview    : "androidx.recyclerview:recyclerview:${dependenciesVersions.androidx_version}",
+        cardview        : "androidx.cardview:cardview:${dependenciesVersions.androidx_version}"
+
+]
+
+final kotlinDependencies = [
+        kotlinStdlibJdk7        : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${dependenciesVersions.kotlin_version}",
+        kotlinxCoroutinesCore   : "org.jetbrains.kotlinx:kotlinx-coroutines-core:${dependenciesVersions.kotlinxCoroutinesCore_version}",
+        kotlinxCoroutinesAndroid: "org.jetbrains.kotlinx:kotlinx-coroutines-android:${dependenciesVersions.kotlinxCoroutinesCore_version}"
+]
+
+final networkingDependencies = [
+        retrofit2     : "com.squareup.retrofit2:retrofit:${dependenciesVersions.retrofit_version}",
+        converterMoshi: "com.squareup.retrofit2:converter-moshi:${dependenciesVersions.retrofit_version}",
+        picasso       : "com.squareup.picasso:picasso:${dependenciesVersions.picasso_version}",
+]
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation androidxDependencies.values()
+    implementation kotlinDependencies.values()
+    implementation networkingDependencies.values()
+    testImplementation testDependencies.values()
+}
