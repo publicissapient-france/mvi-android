@@ -44,7 +44,8 @@ class Reducer : IReducer<State, PartialState> {
                     isKickButtonEnabled = partialState.isJokeButtonEnabled,
                     isSpinnerEnabled = partialState.isSpinnerEnabled,
                     isLoadingFact = partialState.isLoadingFact,
-                    isLoadingCategories = partialState.isLoadingCategories
+                    isLoadingCategories = partialState.isLoadingCategories,
+                    oneTimeEvent = partialState.event
                 )
             }
 

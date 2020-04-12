@@ -62,6 +62,7 @@ class MainActivity : AppCompatActivity(),
                 addAll(categories)
             }
             recyclerViewAdapter.update(state.facts)
+            oneTimeEvent?.invoke(this@MainActivity)
         }
     }
 }

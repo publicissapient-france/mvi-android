@@ -1,5 +1,6 @@
 package fr.xebia.mviandroid.android.chucksfacts
 
+import android.content.Context
 import fr.xebia.mviandroid.domain.entities.Fact
 
 data class State(
@@ -9,5 +10,6 @@ data class State(
     val facts: List<Fact>,
     val categories: List<String>,
     val isKickButtonEnabled: Boolean,
-    val isClearButtonEnabled: Boolean
+    val isClearButtonEnabled: Boolean,
+    val oneTimeEvent: ((Context) -> Unit)? = null
 )

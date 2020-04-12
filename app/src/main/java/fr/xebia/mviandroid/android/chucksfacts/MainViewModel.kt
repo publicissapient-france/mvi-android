@@ -1,5 +1,7 @@
 package fr.xebia.mviandroid.android.chucksfacts
 
+import android.content.Context
+import android.widget.Toast
 import androidx.annotation.UiThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -92,19 +94,21 @@ class MainViewModel : ViewModel(), IModel<State, UserIntent>, CoroutineScope {
 
                     delay(1000)
 
-                    chuckNorrisUseCase.getRandom(action.category).either({ joke ->
-                        stateChannel.send(
-                            PartialState.JokeRetrievedSuccessfully(
-                                joke
+                    chuckNorrisUseCase.getRandom(action.category).either(
+                        onSuccess = { joke ->
+                            stateChannel.send(
+                                PartialState.JokeRetrievedSuccessfully(
+                                    joke
+                                )
                             )
-                        )
-                    }, { exception ->
-                        stateChannel.send(
-                            PartialState.FetchJokeFailed(
-                                exception
+                        },
+                        onFailure = { exception ->
+                            stateChannel.send(
+                                PartialState.FetchJokeFailed(
+                                    exception
+                                )
                             )
-                        )
-                    })
+                        })
                 }
 
                 Action.FetchCategories -> {
@@ -150,7 +154,8 @@ sealed class PartialState {
         const val isSpinnerEnabled = true
     }
 
-    data class Loading(val isLoadingFact: Boolean, val isLoadingCategories: Boolean) : PartialState() {
+    data class Loading(val isLoadingFact: Boolean, val isLoadingCategories: Boolean) :
+        PartialState() {
         val isJokeButtonEnabled = false
         val isSpinnerEnabled = false
     }
@@ -175,6 +180,9 @@ sealed class PartialState {
         val isLoadingFact = false
         val isLoadingCategories = false
         val isSpinnerEnabled = true
+        val event = { context: Context ->
+            Toast.makeText(context, exception.javaClass.simpleName, Toast.LENGTH_LONG).show()
+        }
     }
 
     data class FetchCategoriesFailed(val exception: GenericNetworkException) : PartialState() {
