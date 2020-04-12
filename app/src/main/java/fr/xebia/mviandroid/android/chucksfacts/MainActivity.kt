@@ -1,7 +1,6 @@
 package fr.xebia.mviandroid.android.chucksfacts
 
 import android.os.Bundle
-import android.view.View
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -22,6 +21,8 @@ class MainActivity : AppCompatActivity(),
         Adapter()
     }
 
+    private lateinit var viewModel: IModel<State, UserIntent>
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -30,13 +31,12 @@ class MainActivity : AppCompatActivity(),
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = recyclerViewAdapter
 
-        val viewModel: IModel<State, UserIntent> = ViewModelProvider(
+        viewModel = ViewModelProvider(
             this,
             ViewModelProvider.NewInstanceFactory()
         )[MainViewModel::class.java]
-            .also {
-                it.state.observe(this, Observer { render(it) })
-            }
+
+        viewModel.state.observe(this, Observer { render(it) })
 
         kickButton.setOnClickListener {
             viewModel.dispatchIntent(
@@ -63,6 +63,9 @@ class MainActivity : AppCompatActivity(),
             }
             recyclerViewAdapter.update(state.facts)
             oneTimeEvent?.invoke(this@MainActivity)
+                ?.also {
+                    viewModel.dispatchIntent(UserIntent.NotifyEventExecuted)
+                }
         }
     }
 }

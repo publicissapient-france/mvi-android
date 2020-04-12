@@ -75,7 +75,8 @@ class MainViewModel : ViewModel(), IModel<State, UserIntent>, CoroutineScope {
             is UserIntent.ShowNewFact -> Action.FetchRandomFact(
                 intent.category
             )
-            UserIntent.ClearFact -> Action.ClearFact
+            is UserIntent.ClearFact -> Action.ClearFact
+            is UserIntent.NotifyEventExecuted -> Action.ConsumeEvent
         }
     }
 
@@ -111,7 +112,7 @@ class MainViewModel : ViewModel(), IModel<State, UserIntent>, CoroutineScope {
                         })
                 }
 
-                Action.FetchCategories -> {
+                is Action.FetchCategories -> {
 
                     stateChannel.send(
                         PartialState.Loading(
@@ -137,8 +138,12 @@ class MainViewModel : ViewModel(), IModel<State, UserIntent>, CoroutineScope {
                     })
                 }
 
-                Action.ClearFact -> {
+                is Action.ClearFact -> {
                     stateChannel.send(PartialState.JokesCleared)
+                }
+
+                is Action.ConsumeEvent -> {
+                    stateChannel.send(PartialState.EventConsumed)
                 }
             }
         }
@@ -189,10 +194,13 @@ sealed class PartialState {
         val isLoadingCategories = false
         val isSpinnerEnabled = true
     }
+
+    object EventConsumed : PartialState()
 }
 
 private sealed class Action {
     data class FetchRandomFact(val category: String?) : Action()
     object ClearFact : Action()
     object FetchCategories : Action()
+    object ConsumeEvent : Action()
 }

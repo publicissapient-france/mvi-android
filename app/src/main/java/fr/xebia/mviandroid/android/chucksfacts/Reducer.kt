@@ -39,22 +39,20 @@ class Reducer : IReducer<State, PartialState> {
                 isKickButtonEnabled = partialState.isJokeButtonEnabled
             )
 
-            is PartialState.FetchJokeFailed -> {
-                state.copy(
-                    isKickButtonEnabled = partialState.isJokeButtonEnabled,
-                    isSpinnerEnabled = partialState.isSpinnerEnabled,
-                    isLoadingFact = partialState.isLoadingFact,
-                    isLoadingCategories = partialState.isLoadingCategories,
-                    oneTimeEvent = partialState.event
-                )
-            }
+            is PartialState.FetchJokeFailed -> state.copy(
+                isKickButtonEnabled = partialState.isJokeButtonEnabled,
+                isSpinnerEnabled = partialState.isSpinnerEnabled,
+                isLoadingFact = partialState.isLoadingFact,
+                isLoadingCategories = partialState.isLoadingCategories,
+                oneTimeEvent = partialState.event
+            )
 
-            is PartialState.FetchCategoriesFailed -> {
-                state.copy(
-                    isLoadingCategories = partialState.isLoadingCategories,
-                    isSpinnerEnabled = partialState.isSpinnerEnabled
-                )
-            }
+            is PartialState.FetchCategoriesFailed -> state.copy(
+                isLoadingCategories = partialState.isLoadingCategories,
+                isSpinnerEnabled = partialState.isSpinnerEnabled
+            )
+
+            is PartialState.EventConsumed -> state.copy(oneTimeEvent = null)
         }
     }
 }
